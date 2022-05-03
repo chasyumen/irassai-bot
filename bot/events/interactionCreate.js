@@ -22,8 +22,9 @@ module.exports = {
             var i = {
                 commandName: interaction.commandName,
                 isSlash: true,
-                user: interaction.user,
                 guild: interaction.guild,
+                channel: interaction.channel,
+                user: interaction.user,
             }
 
             if (client.commands.has(interaction.commandName)) {

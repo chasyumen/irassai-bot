@@ -11,12 +11,13 @@ module.exports = {
         ]
     },
     exec: async function (interaction, i, res) {
+        await res.defer();
         if (interaction.options.getSubcommand() == "on") {
             await i.channel.setdb({autoReply: true});
-            res.reply("自動返信を有効にしました！");
+            return await res.reply("自動返信を有効にしました！");
         } else if (interaction.options.getSubcommand() == "off") {
             await i.channel.setdb({autoReply: false});
-            res.reply("自動返信を有効にしました！");
+            return await res.reply("自動返信を無効にしました！");
         }
     }
 }

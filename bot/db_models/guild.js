@@ -6,4 +6,4 @@ const model = mongoose.Schema({
 	disableMemberJoinNotify: { type: Boolean, default: false },
 });
 
-module.exports = mongoose.model("channel", model);
+module.exports = mongoose.model("guild", model);

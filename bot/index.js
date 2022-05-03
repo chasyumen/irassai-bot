@@ -1,4 +1,5 @@
-const { Client, Intents, Collection } = require("discord.js");
+const Discord = require("discord.js");
+const { Client, Intents, Collection } = Discord;
 const { join } = require("path");
 const { readdirSync } = require("fs");
 const mongoose = (global.mongoose = require("mongoose"));
@@ -65,11 +66,13 @@ readdirSync(join(__dirname, './commands')).filter(x => x.endsWith('.js')).forEac
 });
 
 readdirSync(join(__dirname, './db_models')).filter(x => x.endsWith('.js')).forEach(file => {
-    let db_models = require(`./db_models/${file}`);
-    client.db[file.replace(".js", "")] = db_models;
+    let db_model = require(`./db_models/${file}`);
+    client.db[file.replace(".js", "")] = db_model;
 });
 
-client.login(process.env.DISCORD_TOKEN);
+setTimeout(() => {
+    client.login(process.env.DISCORD_TOKEN);
+}, 3000)
 
 Discord.Channel.prototype.getdb = async function () {
     var channelData = await this.client.db.channel.findOne({
