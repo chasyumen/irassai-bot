@@ -1,5 +1,5 @@
 git pull && npm start
 
-sleep 3
+sleep 5
 
 done
