@@ -1,0 +1,20 @@
+module.exports = {
+    name: "guildMemberRemove",
+    event: "guildMemberRemove",
+    exec: async function (member) {
+        if (member.guild.available) {
+            var serverData = await member.guild.getdb();
+            if (!serverData.memberJoinNotify) return;
+            if (serverData.memberJoinNotifyChannel) {
+                var channel = member.guild.channels.cache.get(serverData.memberJoinNotifyChannel);
+            } else {
+                var channel = member.guild.systemChannel ?? null;
+            }
+            if (!channel) {
+                return;
+            } 
+
+            return await channel.send(`${member.user.tag}さん... いってらっさい...`);
+        }
+    }
+}
