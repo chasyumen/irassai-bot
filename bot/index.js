@@ -49,6 +49,9 @@ mongoose.connect(process.env.MONGO_URL, { useNewUrlParser: true, useUnifiedTopol
     console.log("CONNECTED TO DATABASE");
 });
 
+process.on("uncaughtException", console.error);
+process.on("unhandledRejection", console.error);
+
 client.db = {};
 
 readdirSync(join(__dirname, './events')).filter(x => x.endsWith('.js')).forEach(file => {
