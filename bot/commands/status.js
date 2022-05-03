@@ -11,13 +11,13 @@ module.exports = {
         options: []
     },
     exec: async function (interaction, i, res) {
-        res.reply({
+        return await res.reply({
             embeds: [{
                 title: "ステータス",
                 color: config.default_color,
                 description:
                     `CPU: \`${cpus()[0].model}\` x${cpus().length} / ${await cpugetusage()}%\n` +
-                    `メモリー: ${Math.round((totalmem() - freemem() / 1024 / 1024) * 100) / 100}MB/${Math.round((totalmem() / 1024 / 1024) * 100) / 100}MB (${Math.round((totalmem() - freemem()) / totalmem() * 1000) / 10}%)` +
+                    `メモリー: ${Math.round(((totalmem() - freemem()) / 1024 / 1024 / 1024) * 100) / 100}GB/${Math.round((totalmem() / 1024 / 1024 / 1024) * 100) / 100}GB (${Math.round((totalmem() - freemem()) / totalmem() * 1000) / 10}%)` +
                     ``
             }]
         })
