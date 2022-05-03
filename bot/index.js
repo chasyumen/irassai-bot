@@ -13,7 +13,7 @@ const client = (global.client = new Client({
     //   },
     intents: [
         Intents.FLAGS.GUILDS,
-        Intents.FLAGS.GUILD_MESSAGES,
+        Intents.FLAGS.GUILD_MEMBERS,
         // Intents.FLAGS.GUILD_BANS,
         Intents.FLAGS.GUILD_EMOJIS_AND_STICKERS,
         // Intents.FLAGS.GUILD_INTEGRATIONS,
@@ -103,7 +103,7 @@ Discord.Guild.prototype.getdb = async function () {
     var guildData = await this.client.db.guild.findOne({
         guildId: this.id
     });
-    if (!channelData) {
+    if (!guildData) {
         guildData = new client.db.guild({
             guildId: this.id
         });

@@ -16,7 +16,7 @@ module.exports = {
             } else {
                 set = true;
             }
-            console.log(command, "\n", set, "\n", cmd)
+            // console.log(command, "\n", set, "\n", cmd)
 
             var commandData = cmd.slashOptions;
             commandData["name"] = cmd.name;
