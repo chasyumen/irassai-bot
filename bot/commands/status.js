@@ -11,6 +11,7 @@ module.exports = {
         options: []
     },
     exec: async function (interaction, i, res) {
+        await res.defer();
         return await res.reply({
             embeds: [{
                 title: "ステータス",
