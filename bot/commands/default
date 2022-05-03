@@ -1,0 +1,14 @@
+module.exports = {
+    name: "",
+    description: "",
+    category: "",
+    isServerAdminOnly: false,
+    isGlobalAdminOnly: false,
+    slashOptions: {
+        description: "",
+        options: []
+    },
+    exec: async function (interaction, i, res) {
+        
+    }
+}
