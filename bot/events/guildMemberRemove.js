@@ -4,6 +4,7 @@ module.exports = {
     exec: async function (member) {
         if (member.guild.available) {
             var serverData = await member.guild.getdb();
+            console.log(serverData);
             if (!serverData.memberJoinNotify) return;
             if (serverData.memberJoinNotifyChannel) {
                 var channel = member.guild.channels.cache.get(serverData.memberJoinNotifyChannel);

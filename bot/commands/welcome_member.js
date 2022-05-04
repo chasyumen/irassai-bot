@@ -13,6 +13,7 @@ module.exports = {
     },
     exec: async function (interaction, i, res) {
         await res.defer();
+        console.log(i.guild.getdb());
         if (interaction.options.getSubcommand() == "on") {
             await i.guild.setdb({memberJoinNotify: true});
             return await res.reply("メンバー参加通知を有効にしました！");
