@@ -11,6 +11,7 @@ module.exports = {
             } else {
                 var channel = member.guild.systemChannel ?? null;
             }
+            console.log(channel);
             if (!channel) {
                 return;
             } 
