@@ -123,6 +123,6 @@ Discord.Guild.prototype.setdb = async function (data) {
       dataSave["guildId"] = this.id;
       return await (new client.db.guild(dataSave)).save();
     } else {
-      return await client.db.guild.findOneAndUpdate({guildid: this.id}, data);
+      return await client.db.guild.findOneAndUpdate({guildId: this.id}, data);
     }
 };
