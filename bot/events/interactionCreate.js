@@ -33,7 +33,7 @@ module.exports = {
                     return interaction.reply("権限がありません。");
                 }
 
-                if (client.commands.get(interaction.commandName).isGlobalAdminOnly && !config.adminIDs.includes(interaction.userId)) {
+                if (client.commands.get(interaction.commandName).isGlobalAdminOnly && !config.adminids.includes(interaction.user.id)) {
                     return interaction.reply("権限がありません。");
                 }
 
