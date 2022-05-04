@@ -3,7 +3,9 @@ module.exports = {
     event: "messageCreate",
     exec: async function (message) {
         if (message.author.bot) return;
-        
+        if (message.channel.type !== "GUILD_TEXT") {
+            return;
+        }
         var channelData = await message.channel.getdb();
         if (channelData.autoReply) {
             if (message.content.match(/いらっさい/)) {

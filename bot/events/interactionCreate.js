@@ -2,6 +2,7 @@ module.exports = {
     name: "interactionCreate",
     event: "interactionCreate",
     exec: async function (interaction) {
+        if (!interaction.inGuild()) return;
         if (interaction.isCommand()) {
             if (interaction.channel.isThread()) {
                 return false;
