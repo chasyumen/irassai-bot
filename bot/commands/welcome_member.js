@@ -13,7 +13,7 @@ module.exports = {
     },
     exec: async function (interaction, i, res) {
         await res.defer();
-        console.log(i.guild.getdb());
+        console.log(await i.guild.getdb());
         if (interaction.options.getSubcommand() == "on") {
             await i.guild.setdb({memberJoinNotify: true});
             return await res.reply("メンバー参加通知を有効にしました！");
@@ -23,7 +23,7 @@ module.exports = {
         } else if (interaction.options.getSubcommand() == "set_channel") {
             var ch = interaction.options.getChannel("channel");
             if (ch.type == "GUILD_TEXT") {
-                await i.guild.setdb({memberJoinNotifyChannel: ch.id});
+                await interaction.guild.setdb({memberJoinNotifyChannel: ch.id});
                 return await res.reply(`メンバー参加通知チャンネルを <#${ch.id}> に設定しました。`);
             } else {
                 return await res.reply("指定されたチャンネルはテキストチャンネルではありません。");
