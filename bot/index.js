@@ -95,7 +95,7 @@ Discord.Channel.prototype.setdb = async function (data) {
     });
     if (!channelData) {
       var dataSave = data;
-      data["channelId"] = this.id;
+      dataSave["channelId"] = this.id;
       return await (new client.db.channel(dataSave)).save();
     } else {
       return await client.db.channel.findOneAndUpdate({channelId: this.id}, data);
@@ -120,7 +120,7 @@ Discord.Guild.prototype.setdb = async function (data) {
     });
     if (!guildData) {
       var dataSave = data;
-      data["guildId"] = this.id;
+      dataSave["guildId"] = this.id;
       return await (new client.db.guild(dataSave)).save();
     } else {
       return await client.db.guild.findOneAndUpdate({guildid: this.id}, data);
