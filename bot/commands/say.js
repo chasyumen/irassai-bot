@@ -13,8 +13,9 @@ module.exports = {
         ]
     },
     exec: async function (interaction, i, res) {
-        await res.defer();
+        await res.defer({ephemeral: true});
         if (interaction.options.getString("text")) {
+            interaction.deleteReply()
             return await interaction.channel.send(interaction.options.getString("text"));
         } else {
             return await res.deleteReply();
