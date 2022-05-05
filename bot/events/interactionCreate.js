@@ -30,11 +30,11 @@ module.exports = {
 
             if (client.commands.has(interaction.commandName)) {
                 if (client.commands.get(interaction.commandName).isServerAdminOnly && !interaction.member.permissions.has("MANAGE_GUILD")) {
-                    return interaction.reply("権限がありません。");
+                    return interaction.reply("権限がありません。", {ephemeral: true});
                 }
 
                 if (client.commands.get(interaction.commandName).isGlobalAdminOnly && !config.adminids.includes(interaction.user.id)) {
-                    return interaction.reply("権限がありません。");
+                    return interaction.reply("権限がありません。", {ephemeral: true});
                 }
 
                 return client.commands.get(interaction.commandName).exec(interaction, i, res);
