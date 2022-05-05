@@ -15,8 +15,8 @@ module.exports = {
                         return await interaction.reply(reply)
                     }
                 },
-                defer: async function () {
-                    return await interaction.deferReply()
+                defer: async function (option) {
+                    return await interaction.deferReply(option)
                 }
             }
 
