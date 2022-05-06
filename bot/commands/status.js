@@ -17,6 +17,10 @@ module.exports = {
                 title: "ステータス",
                 color: config.default_color,
                 description:
+                    `**統計**\n` + 
+                    `サーバー: ${client.guilds.cache.size}\n` + 
+                    `ユーザー: ${client.users.cache.size}\n\n` + 
+                    `**パフォーマンス**\n` + 
                     `CPU: \`${cpus()[0].model}\` x${cpus().length} / ${await cpugetusage()}%\n` +
                     `メモリー: ${Math.round(((totalmem() - freemem()) / 1024 / 1024 / 1024) * 100) / 100}GB/${Math.round((totalmem() / 1024 / 1024 / 1024) * 100) / 100}GB (${Math.round((totalmem() - freemem()) / totalmem() * 1000) / 10}%)` +
                     ``
