@@ -1,7 +1,7 @@
 const Discord = require("discord.js");
 
 module.exports = {
-    name: "verify_settings",
+    name: "verification",
     description: "ボタン式の簡易メンバー認証の設定ができます。",
     category: "config",
     isServerAdminOnly: true,
