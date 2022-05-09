@@ -2,7 +2,7 @@ const Discord = require("discord.js");
 
 module.exports = {
     name: "verify_settings",
-    description: "ボタン式簡易メンバー認証の有効化/無効化、ロールの設定とチャンネルを設定ができます。",
+    description: "ボタン式簡易メンバー認証の設定ができます。",
     category: "config",
     isServerAdminOnly: true,
     isGlobalAdminOnly: false,
