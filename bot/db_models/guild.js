@@ -7,8 +7,8 @@ const model = mongoose.Schema({
 	verification: {
 		isEnabled: { type: Boolean, default: false },
 		type: { type: Number, default: 0 }, //0: button
-		channel: { type: String | null, default: null }, // channel id or dm
-		role: { type: String | null, default: null },
+		channel: { type: String || null, default: null }, // channel id or dm
+		role: { type: String || null, default: null },
 	},
 });
 
