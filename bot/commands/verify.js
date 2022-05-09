@@ -42,11 +42,12 @@ module.exports = {
             }
             var channel = interaction.guild.channels.cache.get((serverData).verification.channel);
             await channel.send(generateMessageForVerification());
-
-            await i.guild.setdb({ verification: { isEnabled: true } });
+            serverData["verification"]["isEnabled"] = true;
+            await i.guild.setdb({ verification: serverData["verification"]});
             return await res.reply("メンバー認証を有効にしました！");
         } else if (interaction.options.getSubcommand() == "off") {
-            await i.guild.setdb({ verification: { isEnabled: false } });
+            serverData["verification"]["isEnabled"] = false;
+            await i.guild.setdb({ verification: serverData["verification"]});
             return await res.reply("メンバー認証を無効にしました！");
         } else if (interaction.options.getSubcommand() == "set_channel") {
             var ch = interaction.options.getChannel("channel");
@@ -54,7 +55,8 @@ module.exports = {
                 if (!ch.permissionsFor(interaction.guild.me).has(["VIEW_CHANNEL", "SEND_MESSAGES", "EMBED_LINKS"])) {
                     return await res.reply(`このBotには指定されたチャンネルを見る権限、メッセージを送る権限、埋め込みリンクの権限のいずれかまたはすべてがありません。`);
                 }
-                await i.guild.setdb({ verification: { channel: ch.id } });
+                serverData["verification"]["channel"] = ch.id;
+                await i.guild.setdb({ verification: serverData["verification"] });
                 return await res.reply(`メンバー参加通知チャンネルを <#${ch.id}> に設定しました。`);
             } else {
                 return await res.reply("指定されたチャンネルはテキストチャンネルではありません。");
@@ -66,7 +68,8 @@ module.exports = {
                 return await res.reply(`このロールは外部サービスに管理されている(個別のBot専用のロールなど)ため付与できません。`);
             }
             if (highestRole.position > role.position) {
-                await i.guild.setdb({ verification: { role: role.id } });
+                serverData["verification"]["role"] = role.id;
+                await i.guild.setdb({ verification: serverData["verification"] });
                 return await res.reply(`認証後に受け取るロールを <@&${role.id}> に設定しました。`);
             } else {
                 return await res.reply(`認証後に受け取るロールの位置がBotが保有しているロールより高い位置にあるため、ロールを設定できませんでした。`);
