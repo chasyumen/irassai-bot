@@ -83,8 +83,10 @@ module.exports = {
                         }
                     } catch (error) { }
                 }
-                var msg = await sh.send(generateMessageForVerification());
-                serverData["verification"]["latestVerifyMessage"] = msg.id;
+                if (serverData.verification.isEnabled) {
+                    var msg = await channel.send(generateMessageForVerification());
+                    serverData["verification"]["latestVerifyMessage"] = msg.id;
+                }
                 serverData["verification"]["channel"] = ch.id;
                 await i.guild.setdb({ verification: serverData["verification"] });
                 return await res.reply(`メンバー参加通知チャンネルを <#${ch.id}> に設定しました。`);
@@ -106,17 +108,21 @@ module.exports = {
             }
         } else if (interaction.options.getSubcommand() == "resend") {
             if (interaction.guild.channels.cache.has((serverData).verification.channel)) {
-                var channel = interaction.guild.channels.cache.get((serverData).verification.channel);
-                var msg = await channel.send(generateMessageForVerification());
-                if (serverData["verification"]["latestVerifyMessage"]) {
-                    try {
-                        var mesg = await channel.messages.fetch(serverData["verification"]["latestVerifyMessage"]);
-                        if (mesg) mesg.delete();
-                    } catch (error) { }
+                if (serverData.verification.isEnabled) {
+                    var channel = interaction.guild.channels.cache.get((serverData).verification.channel);
+                    var msg = await channel.send(generateMessageForVerification());
+                    if (serverData["verification"]["latestVerifyMessage"]) {
+                        try {
+                            var mesg = await channel.messages.fetch(serverData["verification"]["latestVerifyMessage"]);
+                            if (mesg) mesg.delete();
+                        } catch (error) { }
+                    }
+                    serverData["verification"]["latestVerifyMessage"] = msg.id;
+                    await i.guild.setdb({ verification: serverData["verification"] });
+                    return await res.reply("送信しました。");
+                } else {
+                    return await res.reply("このサーバーでは認証機能が無効化されています。");
                 }
-                serverData["verification"]["latestVerifyMessage"] = msg.id;
-                await i.guild.setdb({ verification: serverData["verification"] });
-                return await res.reply("送信しました。");
             } else {
                 return await res.reply(`チャンネルが指定されていないか、指定されたチャンネルは削除されているかBotが読み取れない状態になっています。\n再度チャンネルを設定してください。`);
             }
