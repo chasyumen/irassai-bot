@@ -23,7 +23,7 @@ module.exports = {
         var serverData = await i.guild.getdb();
         if (interaction.options.getSubcommand() == "on") {
             if ((serverData).verification.channel && (serverData).verification.role) {
-                if (interaction.guild.channels.has((serverData).verification.channel)) {
+                if (interaction.guild.channels.cache.has((serverData).verification.channel)) {
                     var channel = interaction.guild.channels.cache.get((serverData).verification.channel);
                     if (!channel.permissionsFor(interaction.guild.me).has(["VIEW_CHANNEL", "SEND_MESSAGES", "EMBED_LINKS"])) {
                         return await res.reply(`このBotに指定されたチャンネルを見る権限、メッセージを送る権限、埋め込みリンクを送信する権限のいずれかまたはすべてが付与されていないため有効化できません。`);
