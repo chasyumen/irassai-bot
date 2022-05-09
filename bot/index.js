@@ -44,7 +44,7 @@ client.isReady = false;
 // client.aliases = new Collection();
 client.commands = new Collection();
 client.events = new Collection();
-client.interaction = new Collection();
+client.interactions = new Collection();
 
 mongoose.connect(process.env.MONGO_URL, { useNewUrlParser: true, useUnifiedTopology: true }).then((db_connected) => {
     console.log("CONNECTED TO DATABASE");
