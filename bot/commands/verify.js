@@ -24,7 +24,7 @@ module.exports = {
         if (interaction.options.getSubcommand() == "on") {
             if ((serverData).verification.channel && (serverData).verification.role) {
                 if (interaction.guild.channels.has((serverData).verification.channel)) {
-                    var channel = interaction.guild.channels.get((serverData).verification.channel);
+                    var channel = interaction.guild.channels.cache.get((serverData).verification.channel);
                     if (!channel.permissionsFor(interaction.guild.me).has(["VIEW_CHANNEL", "SEND_MESSAGES", "EMBED_LINKS"])) {
                         return await res.reply(`このBotに指定されたチャンネルを見る権限、メッセージを送る権限、埋め込みリンクを送信する権限のいずれかまたはすべてが付与されていないため有効化できません。`);
                     }
@@ -38,9 +38,9 @@ module.exports = {
                     return await res.reply(`ロールが指定されていないか、指定されたロールは削除されているかBotが読み取れない状態になっています。\n再度ロールを設定してください。`);
                 }
             }
-            var channel = interaction.guild.channels.get((serverData).verification.channel);
+            var channel = interaction.guild.channels.cache.get((serverData).verification.channel);
             await channel.send(generateMessageForVerification());
-            
+
             await i.guild.setdb({ verification: { isEnabled: true } });
             return await res.reply("メンバー認証を有効にしました！");
         } else if (interaction.options.getSubcommand() == "off") {
@@ -70,7 +70,7 @@ module.exports = {
                 return await res.reply(`認証後に受け取るロールの位置がBotが保有しているロールより高い位置にあるため、ロールを設定できませんでした。`);
             }
         } else if (interaction.options.getSubcommand() == "refresh") {
-            var channel = interaction.guild.channels.get((serverData).verification.channel);
+            var channel = interaction.guild.channels.cache.get((serverData).verification.channel);
             await channel.send(generateMessageForVerification());
             return await res.reply("送信しました。");
         }
