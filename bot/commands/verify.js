@@ -2,7 +2,7 @@ const Discord = require("discord.js");
 
 module.exports = {
     name: "verify_settings",
-    description: "ボタン式簡易メンバー認証の設定ができます。",
+    description: "ボタン式の簡易メンバー認証の設定ができます。",
     category: "config",
     isServerAdminOnly: true,
     isGlobalAdminOnly: false,
@@ -10,7 +10,7 @@ module.exports = {
         options: [
             { name: "on", description: "メンバー認証を有効化します", type: 1, options: [] },
             { name: "off", description: "メンバー認証を無効化します", type: 1, options: [] },
-            { name: "refresh", description: "メンバー認証用のメッセージを再度送信します。", type: 1, options: [] },
+            { name: "resend", description: "メンバー認証用のメッセージを再度送信します。", type: 1, options: [] },
             { name: "set_channel", description: "チャンネルをセットします。", type: 1, options: [{ "name": "channel", "description": "チャンネル", "type": 7, "required": true }] },
             { name: "set_role", description: "ロールをセットします。", type: 1, options: [{ "name": "role", "description": "ロール", "type": 8, "required": true }] },
         ]
@@ -48,7 +48,7 @@ module.exports = {
         } else if (interaction.options.getSubcommand() == "off") {
             serverData["verification"]["isEnabled"] = false;
             await i.guild.setdb({ verification: serverData["verification"]});
-            return await res.reply("メンバー認証を無効にしました！");
+            return await res.reply("メンバー認証を無効にしました！\n(以前に送信されていた認証用メッセージは自動では削除されません。手動で削除をお願いします。)");
         } else if (interaction.options.getSubcommand() == "set_channel") {
             var ch = interaction.options.getChannel("channel");
             if (ch.type == "GUILD_TEXT") {
@@ -74,10 +74,10 @@ module.exports = {
             } else {
                 return await res.reply(`認証後に受け取るロールの位置がBotが保有しているロールより高い位置にあるため、ロールを設定できませんでした。`);
             }
-        } else if (interaction.options.getSubcommand() == "refresh") {
+        } else if (interaction.options.getSubcommand() == "resend") {
             var channel = interaction.guild.channels.cache.get((serverData).verification.channel);
             await channel.send(generateMessageForVerification());
-            return await res.reply("送信しました。");
+            return await res.reply("送信しました。\n(以前に送信されていた認証用メッセージは自動では削除されません。手動で削除をお願いします。)");
         }
     }
 }
