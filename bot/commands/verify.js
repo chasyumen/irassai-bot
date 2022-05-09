@@ -75,15 +75,15 @@ module.exports = {
                     return await res.reply(`このBotには指定されたチャンネルを見る権限、メッセージを送る権限、埋め込みリンクの権限のいずれかまたはすべてがありません。`);
                 }
                 if (serverData.verification.latestVerifyMessage && interaction.guild.channels.cache.has(serverData["verification"]["channel"])) {
-                    var ch = interaction.guild.channels.cache.get(serverData["verification"]["channel"]);
+                    var channel = interaction.guild.channels.cache.get(serverData["verification"]["channel"]);
                     try {
-                        var msg_del = await ch.messages.fetch(serverData.verification.latestVerifyMessage);
+                        var msg_del = await channel.messages.fetch(serverData.verification.latestVerifyMessage);
                         if (msg_del) {
                             msg_del.delete();
                         }
                     } catch (error) { }
                 }
-                var msg = await channel.send(generateMessageForVerification());
+                var msg = await sh.send(generateMessageForVerification());
                 serverData["verification"]["latestVerifyMessage"] = msg.id;
                 serverData["verification"]["channel"] = ch.id;
                 await i.guild.setdb({ verification: serverData["verification"] });
