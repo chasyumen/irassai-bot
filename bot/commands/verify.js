@@ -37,6 +37,8 @@ module.exports = {
                 } else {
                     return await res.reply(`ロールが指定されていないか、指定されたロールは削除されているかBotが読み取れない状態になっています。\n再度ロールを設定してください。`);
                 }
+            } else {
+                return await res.reply(`先にロールとチャンネルを設定してください。`);
             }
             var channel = interaction.guild.channels.cache.get((serverData).verification.channel);
             await channel.send(generateMessageForVerification());
