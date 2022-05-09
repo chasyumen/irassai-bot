@@ -84,7 +84,7 @@ module.exports = {
                     } catch (error) { }
                 }
                 if (serverData.verification.isEnabled) {
-                    var msg = await channel.send(generateMessageForVerification());
+                    var msg = await ch.send(generateMessageForVerification());
                     serverData["verification"]["latestVerifyMessage"] = msg.id;
                 }
                 serverData["verification"]["channel"] = ch.id;
