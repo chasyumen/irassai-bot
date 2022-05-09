@@ -1,0 +1,7 @@
+module.exports = {
+    name: "",
+    type: "MESSAGE_COMPONENT",
+    exec: async function (interaction, res) {
+        
+    }
+}

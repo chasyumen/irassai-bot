@@ -44,6 +44,7 @@ client.isReady = false;
 // client.aliases = new Collection();
 client.commands = new Collection();
 client.events = new Collection();
+client.interactions = new Collection();
 
 mongoose.connect(process.env.MONGO_URL, { useNewUrlParser: true, useUnifiedTopology: true }).then((db_connected) => {
     console.log("CONNECTED TO DATABASE");
@@ -66,6 +67,11 @@ readdirSync(join(__dirname, './commands')).filter(x => x.endsWith('.js')).forEac
     // command.aliases.forEach(aliases => {
     //     client.aliases.set(aliases, command);
     // });
+});
+
+readdirSync(join(__dirname, './interactions')).filter(x => x.endsWith('.js')).forEach(file => {
+    let interaction = require(`./interactions/${file}`);
+    client.interactions.set(interaction.name, interaction);
 });
 
 readdirSync(join(__dirname, './db_models')).filter(x => x.endsWith('.js')).forEach(file => {
