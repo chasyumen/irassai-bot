@@ -41,20 +41,50 @@ module.exports = {
                 return await res.reply(`先にロールとチャンネルを設定してください。`);
             }
             var channel = interaction.guild.channels.cache.get((serverData).verification.channel);
-            await channel.send(generateMessageForVerification());
+            if (interaction.guild.channels.cache.has((serverData).verification.channel)) {
+                var channel = interaction.guild.channels.cache.get((serverData).verification.channel);
+                if (serverData["verification"]["latestVerifyMessage"]) {
+                    try {
+                        var mesg = await channel.messages.fetch(serverData["verification"]["latestVerifyMessage"]);
+                        if (mesg) mesg.delete();
+                    } catch (error) { }
+                }
+            }
+            var msg = await channel.send(generateMessageForVerification());
+            serverData["verification"]["latestVerifyMessage"] = msg.id;
             serverData["verification"]["isEnabled"] = true;
-            await i.guild.setdb({ verification: serverData["verification"]});
+            await i.guild.setdb({ verification: serverData["verification"] });
             return await res.reply("メンバー認証を有効にしました！");
         } else if (interaction.options.getSubcommand() == "off") {
             serverData["verification"]["isEnabled"] = false;
-            await i.guild.setdb({ verification: serverData["verification"]});
-            return await res.reply("メンバー認証を無効にしました！\n(以前に送信されていた認証用メッセージは自動では削除されません。手動で削除をお願いします。)");
+            if (serverData["verification"]["latestVerifyMessage"]) {
+                if (interaction.guild.channels.cache.has((serverData).verification.channel)) {
+                    var channel = interaction.guild.channels.cache.get((serverData).verification.channel);
+                    try {
+                        var mesg = await channel.messages.fetch(serverData["verification"]["latestVerifyMessage"]);
+                        if (mesg) mesg.delete();
+                    } catch (error) { }
+                }
+            }
+            await i.guild.setdb({ verification: serverData["verification"] });
+            return await res.reply("メンバー認証を無効にしました！");
         } else if (interaction.options.getSubcommand() == "set_channel") {
             var ch = interaction.options.getChannel("channel");
             if (ch.type == "GUILD_TEXT") {
                 if (!ch.permissionsFor(interaction.guild.me).has(["VIEW_CHANNEL", "SEND_MESSAGES", "EMBED_LINKS"])) {
                     return await res.reply(`このBotには指定されたチャンネルを見る権限、メッセージを送る権限、埋め込みリンクの権限のいずれかまたはすべてがありません。`);
                 }
+                if (serverData.verification.latestVerifyMessage && interaction.guild.channels.cache.has(serverData["verification"]["channel"])) {
+                    var ch = interaction.guild.channels.cache.get(serverData["verification"]["channel"]);
+                    try {
+                        var msg_del = await ch.messages.fetch(serverData.verification.latestVerifyMessage);
+                        if (msg_del) {
+                            msg_del.delete();
+                        }
+                    } catch (error) { }
+                }
+                var msg = await channel.send(generateMessageForVerification());
+                serverData["verification"]["latestVerifyMessage"] = msg.id;
                 serverData["verification"]["channel"] = ch.id;
                 await i.guild.setdb({ verification: serverData["verification"] });
                 return await res.reply(`メンバー参加通知チャンネルを <#${ch.id}> に設定しました。`);
@@ -75,9 +105,21 @@ module.exports = {
                 return await res.reply(`認証後に受け取るロールの位置がBotが保有しているロールより高い位置にあるため、ロールを設定できませんでした。`);
             }
         } else if (interaction.options.getSubcommand() == "resend") {
-            var channel = interaction.guild.channels.cache.get((serverData).verification.channel);
-            await channel.send(generateMessageForVerification());
-            return await res.reply("送信しました。\n(以前に送信されていた認証用メッセージは自動では削除されません。手動で削除をお願いします。)");
+            if (interaction.guild.channels.cache.has((serverData).verification.channel)) {
+                var channel = interaction.guild.channels.cache.get((serverData).verification.channel);
+                var msg = await channel.send(generateMessageForVerification());
+                if (serverData["verification"]["latestVerifyMessage"]) {
+                    try {
+                        var mesg = await channel.messages.fetch(serverData["verification"]["latestVerifyMessage"]);
+                        if (mesg) mesg.delete();
+                    } catch (error) { }
+                }
+                serverData["verification"]["latestVerifyMessage"] = msg.id;
+                await i.guild.setdb({ verification: serverData["verification"] });
+                return await res.reply("送信しました。");
+            } else {
+                return await res.reply(`チャンネルが指定されていないか、指定されたチャンネルは削除されているかBotが読み取れない状態になっています。\n再度チャンネルを設定してください。`);
+            }
         }
     }
 }

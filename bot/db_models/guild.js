@@ -9,6 +9,7 @@ const model = mongoose.Schema({
 		type: { type: Number, default: 0 }, //0: button
 		channel: { type: String || null, default: null }, // channel id or dm
 		role: { type: String || null, default: null },
+		latestVerifyMessage: { type: String || null, default: null }
 	},
 });
 
