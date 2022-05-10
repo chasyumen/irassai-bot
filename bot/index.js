@@ -81,7 +81,7 @@ readdirSync(join(__dirname, './db_models')).filter(x => x.endsWith('.js')).forEa
 
 setTimeout(() => {
     client.login(process.env.DISCORD_TOKEN);
-}, 3000)
+}, 3000);
 
 Discord.Channel.prototype.getdb = async function () {
     var channelData = await this.client.db.channel.findOne({
