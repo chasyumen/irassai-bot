@@ -64,7 +64,7 @@ readdirSync(join(__dirname, './events')).filter(x => x.endsWith('.js')).forEach(
 
 readdirSync(join(__dirname, './functions')).filter(x => x.endsWith('.js')).forEach(file => {
     let func = require(`./functions/${file}`);
-    client.events.set(func.name, func);
+    client.functions.set(func.name, func);
 });
 
 readdirSync(join(__dirname, './commands')).filter(x => x.endsWith('.js')).forEach(file => {

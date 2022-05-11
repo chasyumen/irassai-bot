@@ -9,7 +9,7 @@ module.exports = {
                 height: 50,
                 text: text
             }
-            var captcha = new gmCaptcha();
+            var captcha = new gmCaptcha(options);
             var gmObj = captcha.generator(); // return a gm object
             captcha.gmBuffer(gmObj, 'PNG', function (buffer) {
                 resolve(buffer);
