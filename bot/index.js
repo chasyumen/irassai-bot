@@ -43,6 +43,7 @@ global.config = require("../config.json");
 client.isReady = false;
 // client.aliases = new Collection();
 client.commands = new Collection();
+client.functions = new Collection();
 client.events = new Collection();
 client.interactions = new Collection();
 
@@ -59,6 +60,11 @@ readdirSync(join(__dirname, './events')).filter(x => x.endsWith('.js')).forEach(
     let event = require(`./events/${file}`);
     client.on(event.event, event.exec);
     client.events.set(event.name, event);
+});
+
+readdirSync(join(__dirname, './functions')).filter(x => x.endsWith('.js')).forEach(file => {
+    let func = require(`./functions/${file}`);
+    client.events.set(func.name, func);
 });
 
 readdirSync(join(__dirname, './commands')).filter(x => x.endsWith('.js')).forEach(file => {
