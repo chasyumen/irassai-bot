@@ -2,7 +2,7 @@ var gmCaptcha = require('gm-captcha');
 
 module.exports = {
     name: "generateCaptcha",
-    run: async function (text) {
+    run: function (text) {
         return new Promise((resolve, reject) => {
             var options = {
                 width: 100,
