@@ -1,9 +1,10 @@
-var gmCaptcha = require('gm-captcha');
+// var gmCaptcha = require('gm-captcha');
 
 module.exports = {
     name: "generateCaptcha",
-    run: function (text) {
-        return new Promise((resolve, reject) => {
+    run: async function (text) {
+        return null;
+        /* new Promise((resolve, reject) => {
             var options = {
                 width: 100,
                 height: 50,
@@ -14,6 +15,6 @@ module.exports = {
             captcha.gmBuffer(gmObj, 'PNG', function (buffer) {
                 resolve(buffer);
             });
-        });
+        });*/
     }
 }
