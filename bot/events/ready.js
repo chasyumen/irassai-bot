@@ -40,6 +40,7 @@ module.exports = {
                 { name: `新メンバー`, type: 'WATCHING' },
                 { name: `バージョン ${require("../../package.json").version}`, type: 'PLAYING' },
                 { name: `/help で、ヘルプを表示`, type: 'PLAYING' },
+                { name: `#ゆっくり茶番劇を守れ`, type: 'WATCHING' },
             ]
             if (number >= (presences.length - 1)) {
                 number = 0;
