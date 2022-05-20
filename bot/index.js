@@ -4,6 +4,7 @@ const { join } = require("path");
 const { readdirSync } = require("fs");
 const mongoose = (global.mongoose = require("mongoose"));
 const async2 = (global.async2 = require("async"));
+const db_class = require("../src/database/index.js");
 const client = (global.client = new Client({
     //   ws: {
     //     properties: {
@@ -38,23 +39,33 @@ const client = (global.client = new Client({
     restGlobalRateLimit: 40
 }));
 
+client.db = (global.db = new db_class());
+
 global.config = require("../config.json");
 
 client.isReady = false;
+
 // client.aliases = new Collection();
 client.commands = new Collection();
 client.functions = new Collection();
 client.events = new Collection();
 client.interactions = new Collection();
 
-mongoose.connect(process.env.MONGO_URL, { useNewUrlParser: true, useUnifiedTopology: true }).then((db_connected) => {
+db.connect(process.env.MONGO_URL, { useNewUrlParser: true, useUnifiedTopology: true }).then(async (db_connected) => {
     console.log("CONNECTED TO DATABASE");
+    await db.load_models();
+    await dbCache()
+    setInterval(dbCache, 2000);
+    async function dbCache() {
+        return await db.saveCache();
+    }
+    // console.log(db);
 });
 
 process.on("uncaughtException", console.error);
 process.on("unhandledRejection", console.error);
 
-client.db = {};
+// client.db = {};
 
 readdirSync(join(__dirname, './events')).filter(x => x.endsWith('.js')).forEach(file => {
     let event = require(`./events/${file}`);
@@ -70,9 +81,6 @@ readdirSync(join(__dirname, './functions')).filter(x => x.endsWith('.js')).forEa
 readdirSync(join(__dirname, './commands')).filter(x => x.endsWith('.js')).forEach(file => {
     let command = require(`./commands/${file}`);
     client.commands.set(command.name, command);
-    // command.aliases.forEach(aliases => {
-    //     client.aliases.set(aliases, command);
-    // });
 });
 
 readdirSync(join(__dirname, './interactions')).filter(x => x.endsWith('.js')).forEach(file => {
@@ -80,19 +88,22 @@ readdirSync(join(__dirname, './interactions')).filter(x => x.endsWith('.js')).fo
     client.interactions.set(interaction.name, interaction);
 });
 
-readdirSync(join(__dirname, './db_models')).filter(x => x.endsWith('.js')).forEach(file => {
-    let db_model = require(`./db_models/${file}`);
-    client.db[file.replace(".js", "")] = db_model;
-});
-
 setTimeout(() => {
     client.login(process.env.DISCORD_TOKEN);
 }, 3000);
 
 Discord.Channel.prototype.getdb = async function () {
-    var channelData = await this.client.db.channel.findOne({
-        channelId: this.id
-    });
+    // console.log(client.db);
+    try {
+        var channelData = this.client.db.cache.channel.find(data => data.channelId == this.id);
+    } catch (error) {
+        var channelData = await this.client.db.models.channel.findOne({
+            channelId: this.id
+        });
+    }
+    // var channelData = await this.client.db.channel.findOne({
+    //     channelId: this.id
+    // });
     if (!channelData) {
         channelData = new client.db.channel({
             channelId: this.id
@@ -106,18 +117,25 @@ Discord.Channel.prototype.setdb = async function (data) {
         channelId: this.id
     });
     if (!channelData) {
-      var dataSave = data;
-      dataSave["channelId"] = this.id;
-      return await (new client.db.channel(dataSave)).save();
+        var dataSave = data;
+        dataSave["channelId"] = this.id;
+        return await (new client.db.channel(dataSave)).save();
     } else {
-      return await client.db.channel.findOneAndUpdate({channelId: this.id}, data);
+        return await client.db.channel.findOneAndUpdate({ channelId: this.id }, data);
     }
 };
 
 Discord.Guild.prototype.getdb = async function () {
-    var guildData = await this.client.db.guild.findOne({
-        guildId: this.id
-    });
+    try {
+        var guildData = this.client.db.cache.guild.find(data => data.guildId == this.id);
+    } catch (error) {
+        var guildData = await this.client.db.models.guild.findOne({
+            guildId: this.id
+        });
+    }
+    // var guildData = await this.client.db.guild.findOne({
+    //     guildId: this.id
+    // });
     if (!guildData) {
         guildData = new client.db.guild({
             guildId: this.id
@@ -131,10 +149,10 @@ Discord.Guild.prototype.setdb = async function (data) {
         guildId: this.id
     });
     if (!guildData) {
-      var dataSave = data;
-      dataSave["guildId"] = this.id;
-      return await (new client.db.guild(dataSave)).save();
+        var dataSave = data;
+        dataSave["guildId"] = this.id;
+        return await (new client.db.guild(dataSave)).save();
     } else {
-      return await client.db.guild.findOneAndUpdate({guildId: this.id}, data);
+        return await client.db.guild.findOneAndUpdate({ guildId: this.id }, data);
     }
 };

@@ -4,6 +4,7 @@
         "794119190793420810"
     ],
     "colors": {
+        "default_color": "0x33FF49",
         "error_color": "0xFF0000"
     },
     "credits": "Made by chasyumen",
