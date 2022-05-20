@@ -1,6 +1,6 @@
 module.exports = {
     name: "welcome_member",
-    description: "メンバー参加通知の有効化/無効化とチャンネルを設定できます。",
+    description: "メンバー参加通知の設定をします。",
     category: "config",
     isServerAdminOnly: true,
     isGlobalAdminOnly: false,

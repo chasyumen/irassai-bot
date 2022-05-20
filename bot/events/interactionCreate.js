@@ -2,7 +2,9 @@ module.exports = {
     name: "interactionCreate",
     event: "interactionCreate",
     exec: async function (interaction) {
-        if (!interaction.inGuild()) return;
+        if (!interaction.inGuild()) {
+            return await interaction.reply("このBotは現在DMでのコマンドには応答できません。");
+        }
         if (interaction.isCommand()) {
             if (interaction.channel.isThread()) {
                 return false;

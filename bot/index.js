@@ -35,7 +35,7 @@ const client = (global.client = new Client({
             { name: `起動中 | ${require("../package.json").version}` }
         ]
     },
-    restGlobalRateLimit: 20
+    restGlobalRateLimit: 40
 }));
 
 global.config = require("../config.json");
@@ -43,6 +43,7 @@ global.config = require("../config.json");
 client.isReady = false;
 // client.aliases = new Collection();
 client.commands = new Collection();
+client.functions = new Collection();
 client.events = new Collection();
 client.interactions = new Collection();
 
@@ -59,6 +60,11 @@ readdirSync(join(__dirname, './events')).filter(x => x.endsWith('.js')).forEach(
     let event = require(`./events/${file}`);
     client.on(event.event, event.exec);
     client.events.set(event.name, event);
+});
+
+readdirSync(join(__dirname, './functions')).filter(x => x.endsWith('.js')).forEach(file => {
+    let func = require(`./functions/${file}`);
+    client.functions.set(func.name, func);
 });
 
 readdirSync(join(__dirname, './commands')).filter(x => x.endsWith('.js')).forEach(file => {
@@ -81,7 +87,7 @@ readdirSync(join(__dirname, './db_models')).filter(x => x.endsWith('.js')).forEa
 
 setTimeout(() => {
     client.login(process.env.DISCORD_TOKEN);
-}, 3000)
+}, 3000);
 
 Discord.Channel.prototype.getdb = async function () {
     var channelData = await this.client.db.channel.findOne({

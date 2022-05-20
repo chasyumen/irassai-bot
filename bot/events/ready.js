@@ -4,6 +4,14 @@ module.exports = {
     exec: async function () {
         console.log("isReady");
         await this.application.commands.fetch();
+        await async2.eachSeries(client.application.commands.cache, async (cmd) => {
+            var set = false;
+            var command = client.commands.toJSON().find(x => x.name == cmd.name);
+            if (!command) {
+                await command.delete();
+            }
+            return true;
+        });
         await async2.eachSeries(client.commands.toJSON(), async (cmd) => {
             var set = false;
             var command = client.application.commands.cache.find(x => x.name == cmd.name);
@@ -40,6 +48,7 @@ module.exports = {
                 { name: `新メンバー`, type: 'WATCHING' },
                 { name: `バージョン ${require("../../package.json").version}`, type: 'PLAYING' },
                 { name: `/help で、ヘルプを表示`, type: 'PLAYING' },
+                // { name: `#ゆっくり茶番劇を守れ`, type: 'WATCHING' },
             ]
             if (number >= (presences.length - 1)) {
                 number = 0;
