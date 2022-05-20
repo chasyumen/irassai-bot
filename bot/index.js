@@ -35,7 +35,7 @@ const client = (global.client = new Client({
             { name: `起動中 | ${require("../package.json").version}` }
         ]
     },
-    restGlobalRateLimit: 20
+    restGlobalRateLimit: 40
 }));
 
 global.config = require("../config.json");
