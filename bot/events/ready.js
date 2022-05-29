@@ -41,7 +41,7 @@ module.exports = {
         client.isReady = true;
         var number = 0;
         setPresence();
-        setInterval(setPresence, 5000);
+        setInterval(setPresence, 10000);
         async function setPresence() {
             var presences = [
                 { name: `${client.guilds.cache.size} サーバー`, type: 'COMPETING' },
