@@ -30,6 +30,12 @@ module.exports = {
                 user: interaction.user,
             }
 
+            var logString = `COMMAND: \`${i.commandName}\`, GUILD: \`${i.guild.name} (ID:${i.guild.id})\`, ` +
+                `CHANNEL: \`${i.channel.name}, (ID:${i.channel.id})\`` +
+                `USER: \`${i.user.tag}, (ID:${i.user.id})\``;
+
+            client.emit("addLogQueue", "COMMAND", "EXECUTE", new Date(), logString);
+
             if (client.commands.has(interaction.commandName)) {
                 if (client.commands.get(interaction.commandName).isServerAdminOnly && !interaction.member.permissions.has("MANAGE_GUILD")) {
                     return interaction.reply({content: "権限がありません。", ephemeral: true});

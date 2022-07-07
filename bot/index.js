@@ -66,6 +66,17 @@ process.on("uncaughtException", console.error);
 process.on("unhandledRejection", console.error);
 
 // client.db = {};
+client.logQueue = new Array();
+client.logInterval = setInterval(() => {
+    if (client.logQueue.length >= 1) {
+        var logs = client.logQueue.splice(0, 10);
+        var content = logs.join("\n");
+        await client.channels.cache.get(config.logs).send(content);
+    }
+    return;
+}, 10000);
+
+client.db = {};
 
 readdirSync(join(__dirname, './events')).filter(x => x.endsWith('.js')).forEach(file => {
     let event = require(`./events/${file}`);
