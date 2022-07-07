@@ -67,7 +67,7 @@ process.on("unhandledRejection", console.error);
 
 // client.db = {};
 client.logQueue = new Array();
-client.logInterval = setInterval(() => {
+client.logInterval = setInterval(async () => {
     if (client.logQueue.length >= 1) {
         var logs = client.logQueue.splice(0, 10);
         var content = logs.join("\n");
