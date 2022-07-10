@@ -1,3 +1,6 @@
+2.2.2
+Minor fixes on logging
+
 2.2.1
 Logging
 

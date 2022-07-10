@@ -2,7 +2,7 @@ module.exports = {
     name: "addLogQueue",
     event: "addLogQueue",
     exec: function (subject, title, time, content) {
-        var content = `[${time.getFullYear()}/${time.getMonth()}/${time.getDay()} ${time.getHours()}/${time.getMinutes()}/${time.getSeconds()}]`+
+        var content = `[${time.getFullYear()}/${time.getMonth()}/${time.getDate()} ${time.getHours()}:${time.getMinutes()}:${time.getSeconds()}]`+
         ` [${subject}-${title}] ${content}`;
         client.logQueue.push(content);
         return content;
