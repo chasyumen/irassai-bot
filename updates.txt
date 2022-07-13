@@ -1,3 +1,6 @@
+2.2.3
+Logs member join and leave
+
 2.2.2
 Minor fixes on logging
 
