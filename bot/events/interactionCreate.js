@@ -62,6 +62,13 @@ module.exports = {
                     return await interaction.deferReply(option)
                 }
             }
+
+            var logString = `COMMAND: \`${interaction.customId}\`, GUILD: \`${interaction.guild.name} (ID:${interaction.guildId})\`, ` +
+                `CHANNEL: \`${interaction.channel.name}, (ID:${interaction.channel.id})\`` +
+                `USER: \`${interaction.user.tag}, (ID:${interaction.user.id})\``;
+
+            client.emit("addLogQueue", "MESSAGE_INTERACTION", "EXECUTE", new Date(), logString);
+
             if (client.interactions.has(interaction.customId.split(":")[0])) {
                 return client.interactions.get(interaction.customId.split(":")[0]).exec(interaction, res);
             } else {
