@@ -1,11 +1,15 @@
 {
     "adminids": [
-        "614305573827117066",
+        "614305573827117066"
+    ],
+    "modids": [
         "794119190793420810"
     ],
     "colors": {
+        "default_color": "0x33FF49",
         "error_color": "0xFF0000"
     },
     "credits": "Made by chasyumen",
-    "default_color": "0x33FF49"
+    "default_color": "0x33FF49",
+    "logs": "994619401447931945"
 }

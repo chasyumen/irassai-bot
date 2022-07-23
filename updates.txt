@@ -1,3 +1,19 @@
+2.2.4
+Fix logging bug (Month was not correctly shown)
+Added message interaction logger
+
+2.2.3
+Logs member join and leave
+
+2.2.2
+Minor fixes on logging
+
+2.2.1
+Logging
+
+2.2.0
+Ping / database cache
+
 2.1.3
 抗議文削除
 メッセージを受け取ったときに権限が足りない場合の例外処理

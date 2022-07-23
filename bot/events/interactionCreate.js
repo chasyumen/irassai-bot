@@ -30,6 +30,12 @@ module.exports = {
                 user: interaction.user,
             }
 
+            var logString = `COMMAND: \`${i.commandName}\`, GUILD: \`${i.guild.name} (ID:${i.guild.id})\`, ` +
+                `CHANNEL: \`${i.channel.name}, (ID:${i.channel.id})\`` +
+                `USER: \`${i.user.tag}, (ID:${i.user.id})\``;
+
+            client.emit("addLogQueue", "COMMAND", "EXECUTE", new Date(), logString);
+
             if (client.commands.has(interaction.commandName)) {
                 if (client.commands.get(interaction.commandName).isServerAdminOnly && !interaction.member.permissions.has("MANAGE_GUILD")) {
                     return interaction.reply({content: "権限がありません。", ephemeral: true});
@@ -56,6 +62,13 @@ module.exports = {
                     return await interaction.deferReply(option)
                 }
             }
+
+            var logString = `COMMAND: \`${interaction.customId}\`, GUILD: \`${interaction.guild.name} (ID:${interaction.guildId})\`, ` +
+                `CHANNEL: \`${interaction.channel.name}, (ID:${interaction.channel.id})\`` +
+                `USER: \`${interaction.user.tag}, (ID:${interaction.user.id})\``;
+
+            client.emit("addLogQueue", "MESSAGE_INTERACTION", "EXECUTE", new Date(), logString);
+
             if (client.interactions.has(interaction.customId.split(":")[0])) {
                 return client.interactions.get(interaction.customId.split(":")[0]).exec(interaction, res);
             } else {
