@@ -1,3 +1,6 @@
+2.3.0
+メンバー参加時に送信するメッセージを埋め込みにするオプション追加
+
 2.2.4
 Fix logging bug (Month was not correctly shown)
 Added message interaction logger
