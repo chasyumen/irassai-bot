@@ -9,6 +9,7 @@ module.exports = {
             {name: "on", description: "メンバー参加通知を有効化します", type: 1, options: []},
             {name: "off", description: "メンバー参加通知を無効化します", type: 1, options: []},
             {name: "set_channel", description: "チャンネルをセットします。", type: 1, options: [ { "name": "channel", "description": "チャンネル", "type": 7, "required": true }]},
+            {name: "type", description: "チャンネルをセットします。", type: 1, options: [ { "name": "type", "description": "参加メッセージの種類", "type": 3, "choices": [{"name": "テキスト", "value": "text"}, {"name": "埋め込み", "value": "embed"}], "required": true }]},
         ]
     },
     exec: async function (interaction, i, res) {
@@ -27,6 +28,14 @@ module.exports = {
                 return await res.reply(`メンバー参加通知チャンネルを <#${ch.id}> に設定しました。`);
             } else {
                 return await res.reply("指定されたチャンネルはテキストチャンネルではありません。");
+            }
+        } else if (interaction.options.getSubcommand() == "type") {
+            var type = interaction.options.getString("type");
+            if (type == "text" || type == "embed") {
+                await interaction.guild.setdb({memberJoinNotifyType: type});
+                return await res.reply(`メンバー参加通知の種類をを \`${type == "text" ? "テキスト" : type == "embed" ? "埋め込み" : null}\` に設定しました。`);
+            } else {
+                return await res.reply("指定されたオプションは無効です。");
             }
         }
     }

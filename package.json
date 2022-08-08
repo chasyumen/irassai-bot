@@ -1,6 +1,6 @@
 {
   "name": "irassai-bot",
-  "version": "2.2.4",
+  "version": "2.3.0",
   "description": "新・いらっさいbot",
   "main": "index.js",
   "scripts": {
@@ -25,7 +25,7 @@
   "homepage": "https://github.com/chasyumen/irassai-bot#readme",
   "dependencies": {
     "async": "^3.2.3",
-    "discord.js": "^13.6.0",
+    "discord.js": "^13.9.2",
     "dotenv": "^16.0.0",
     "json-bigint": "^1.0.0",
     "mongoose": "^6.3.2",
