@@ -8,7 +8,7 @@ module.exports = {
         }
         var channelData = await message.channel.getdb();
         if (channelData.autoReply) {
-            if (!message.channel.permissionsFor(message.guild.me).has(["VIEW_CHANNEL", "SEND_MESSAGES"])) return;
+            if (!message.channel.permissionsFor(message.guild.me).has([1 << 10, 1 << 11])) return;
             if (message.content.match(/いらっさい/)) {
                 message.reply("いらっさい");
             } else if (message.content.match(/いってらっさい/)) {

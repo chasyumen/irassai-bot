@@ -16,7 +16,7 @@ module.exports = {
         }
 
         var role = interaction.guild.roles.cache.get(serverData.verification.role);
-        var highestRole = interaction.guild.me.roles.highest;
+        var highestRole = (await interaction.guild.members.fetchMe()).roles.highest;
 
         if (interaction.member.roles.cache.has(role.id)) {
             return await res.reply({content: `あなたは既に認証済みです。`, ephemeral: true});

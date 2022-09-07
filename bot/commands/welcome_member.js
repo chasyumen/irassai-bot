@@ -6,7 +6,7 @@ module.exports = {
     isGlobalAdminOnly: false,
     slashOptions: {
         options: [
-            {name: "view", description: "設定を確認します。", type: 1, options: []},
+            {name: "view", description: "設定を確認します", type: 1, options: []},
             {name: "on", description: "メンバー参加通知を有効化します", type: 1, options: []},
             {name: "off", description: "メンバー参加通知を無効化します", type: 1, options: []},
             {name: "set_channel", description: "チャンネルをセットします。", type: 1, options: [ { "name": "channel", "description": "チャンネル", "type": 7, "required": true }]},
@@ -23,10 +23,12 @@ module.exports = {
                     "value": conf_data.memberJoinNotify ? "有効" : "無効",
                     "inline": true
                 });
-            if (conf_data.memberJoinNotify == true) {
+            // if (conf_data.memberJoinNotify == true) {
                 fieldArray.push({
                     "name": "チャンネル",
-                    "value": `<#${conf_data.memberJoinNotifyChannel}>`,
+                    "value": conf_data.memberJoinNotifyChannel !== null ? 
+                    `<#${conf_data.memberJoinNotifyChannel}> \n(ID: \`${conf_data.memberJoinNotifyChannel}\`)` : 
+                    "未登録",
                     "inline": true
                 });
                 fieldArray.push({
@@ -34,7 +36,7 @@ module.exports = {
                     "value": `${conf_data.memberJoinNotifyType == "text" ? "テキスト" : conf_data.memberJoinNotifyType == "embed" ? "埋め込み" : null}`,
                     "inline": true
                 });
-            }
+            // }
             return await res.reply({embeds:[{
                 title: "メンバー参加通知設定",
                 color: config.default_color,
