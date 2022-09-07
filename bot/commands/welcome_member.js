@@ -50,7 +50,7 @@ module.exports = {
             return await res.reply("メンバー参加通知を無効にしました！");
         } else if (interaction.options.getSubcommand() == "set_channel") {
             var ch = interaction.options.getChannel("channel");
-            if (ch.type == "GUILD_TEXT") {
+            if (ch.type == "0") {
                 await interaction.guild.setdb({memberJoinNotifyChannel: ch.id});
                 return await res.reply(`メンバー参加通知チャンネルを <#${ch.id}> に設定しました。`);
             } else {

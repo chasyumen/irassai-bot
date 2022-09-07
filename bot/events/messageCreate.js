@@ -3,7 +3,7 @@ module.exports = {
     event: "messageCreate",
     exec: async function (message) {
         if (message.author.bot) return;
-        if (message.channel.type !== "GUILD_TEXT") {
+        if (message.channel.type !== "0") {
             return;
         }
         var channelData = await message.channel.getdb();

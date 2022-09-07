@@ -61,7 +61,7 @@ module.exports = {
             if ((serverData).verification.channel && (serverData).verification.role) {
                 if (interaction.guild.channels.cache.has((serverData).verification.channel)) {
                     var channel = interaction.guild.channels.cache.get((serverData).verification.channel);
-                    if (!channel.permissionsFor(interaction.guild.me).has([BigInt(1 << 10), BigInt(1 << 11), BigInt(1 << 14)])) {
+                    if (!channel.permissionsFor((await interaction.guild.members.fetchMe())).has([BigInt(1 << 10), BigInt(1 << 11), BigInt(1 << 14)])) {
                         return await res.reply(`このBotに指定されたチャンネルを見る権限、メッセージを送る権限、埋め込みリンクを送信する権限のいずれかまたはすべてが付与されていないため有効化できません。`);
                     }
                 } else {
@@ -106,8 +106,8 @@ module.exports = {
             return await res.reply("メンバー認証を無効にしました！");
         } else if (interaction.options.getSubcommand() == "set_channel") {
             var ch = interaction.options.getChannel("channel");
-            if (ch.type == "GUILD_TEXT") {
-                if (!ch.permissionsFor(interaction.guild.me).has([BigInt(1 << 10), BigInt(1 << 11), BigInt(1 << 14)])) {
+            if (ch.type == "0") {
+                if (!ch.permissionsFor((await interaction.guild.members.fetchMe())).has([BigInt(1 << 10), BigInt(1 << 11), BigInt(1 << 14)])) {
                     return await res.reply(`このBotには指定されたチャンネルを見る権限、メッセージを送る権限、埋め込みリンクの権限のいずれかまたはすべてがありません。`);
                 }
                 if (serverData.verification.latestVerifyMessage && interaction.guild.channels.cache.has(serverData["verification"]["channel"])) {
