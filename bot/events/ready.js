@@ -44,18 +44,18 @@ module.exports = {
         setInterval(setPresence, 10000);
         async function setPresence() {
             var presences = [
-                { name: `${client.guilds.cache.size} サーバー`, type: 'COMPETING' },
-                { name: `新メンバー`, type: 'WATCHING' },
-                { name: `バージョン ${require("../../package.json").version}`, type: 'PLAYING' },
-                { name: `/help で、ヘルプを表示`, type: 'PLAYING' },
-                // { name: `#ゆっくり茶番劇を守れ`, type: 'WATCHING' },
+                { name: `${client.guilds.cache.size} サーバー`, type: 5 },
+                { name: `新メンバー`, type: 3 },
+                { name: `バージョン ${require("../../package.json").version}`, type: 0 },
+                { name: `/help で、ヘルプを表示`, type: 0 },
             ]
             if (number >= (presences.length - 1)) {
                 number = 0;
             } else {
                 number++;
             }
-            client.user.setPresence({
+            // console.log(presences[number])
+            client.user.presence.set({
                 activities: [presences[number]],
                 status: "online"
             });

@@ -6,6 +6,7 @@ module.exports = {
     isGlobalAdminOnly: false,
     slashOptions: {
         options: [
+            {name: "view", description: "設定を確認します", type: 1, options: []},
             {name: "on", description: "メンバー参加通知を有効化します", type: 1, options: []},
             {name: "off", description: "メンバー参加通知を無効化します", type: 1, options: []},
             {name: "set_channel", description: "チャンネルをセットします。", type: 1, options: [ { "name": "channel", "description": "チャンネル", "type": 7, "required": true }]},
@@ -15,7 +16,33 @@ module.exports = {
     exec: async function (interaction, i, res) {
         await res.defer();
         console.log(await i.guild.getdb());
-        if (interaction.options.getSubcommand() == "on") {
+        if (interaction.options.getSubcommand() == "view") {
+            let conf_data = await i.guild.getdb();
+            var fieldArray = new Array({
+                    "name": "機能を利用する (有効/無効)",
+                    "value": conf_data.memberJoinNotify ? "有効" : "無効",
+                    "inline": true
+                });
+            // if (conf_data.memberJoinNotify == true) {
+                fieldArray.push({
+                    "name": "チャンネル",
+                    "value": conf_data.memberJoinNotifyChannel !== null ? 
+                    `<#${conf_data.memberJoinNotifyChannel}> \n(ID: \`${conf_data.memberJoinNotifyChannel}\`)` : 
+                    "未登録",
+                    "inline": true
+                });
+                fieldArray.push({
+                    "name": "タイプ",
+                    "value": `${conf_data.memberJoinNotifyType == "text" ? "テキスト" : conf_data.memberJoinNotifyType == "embed" ? "埋め込み" : null}`,
+                    "inline": true
+                });
+            // }
+            return await res.reply({embeds:[{
+                title: "メンバー参加通知設定",
+                color: config.default_color,
+                fields: fieldArray
+            }]});
+        } else if (interaction.options.getSubcommand() == "on") {
             await i.guild.setdb({memberJoinNotify: true});
             return await res.reply("メンバー参加通知を有効にしました！");
         } else if (interaction.options.getSubcommand() == "off") {

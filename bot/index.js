@@ -1,5 +1,5 @@
 const Discord = require("discord.js");
-const { Client, Intents, Collection } = Discord;
+const { Client, GatewayIntentBits, Collection } = Discord;
 const { join } = require("path");
 const { readdirSync } = require("fs");
 const mongoose = (global.mongoose = require("mongoose"));
@@ -13,21 +13,21 @@ const client = (global.client = new Client({
     //     },
     //   },
     intents: [
-        Intents.FLAGS.GUILDS,
-        Intents.FLAGS.GUILD_MEMBERS,
-        // Intents.FLAGS.GUILD_BANS,
-        Intents.FLAGS.GUILD_EMOJIS_AND_STICKERS,
-        // Intents.FLAGS.GUILD_INTEGRATIONS,
-        Intents.FLAGS.GUILD_WEBHOOKS,
-        Intents.FLAGS.GUILD_INVITES,
-        // Intents.FLAGS.GUILD_VOICE_STATES,
-        // Intents.FLAGS.GUILD_PRESENCES,
-        Intents.FLAGS.GUILD_MESSAGES,
-        Intents.FLAGS.GUILD_MESSAGE_REACTIONS,
-        // Intents.FLAGS.GUILD_MESSAGE_TYPING,
-        Intents.FLAGS.DIRECT_MESSAGES,
-        Intents.FLAGS.DIRECT_MESSAGE_REACTIONS,
-        // Intents.FLAGS.DIRECT_MESSAGE_TYPING,
+        GatewayIntentBits.Guilds,
+        GatewayIntentBits.GuildMembers,
+        // GatewayIntentBits.GuildBans,
+        GatewayIntentBits.GuildEmojisAndStickers,
+        // GatewayIntentBits.GuildIntegrations,
+        GatewayIntentBits.GuildWebhooks,
+        GatewayIntentBits.GuildInvites,
+        // GatewayIntentBits.GuildVoiceStates,
+        // GatewayIntentBits.GuildPresences,
+        GatewayIntentBits.GuildMessages,
+        GatewayIntentBits.GuildMessageReactions,
+        // GatewayIntentBits.GuildMessageTyping,
+        GatewayIntentBits.DirectMessages,
+        GatewayIntentBits.DirectMessageReactions,
+        // GatewayIntentBits.DirectMessageTyping,
     ],
     allowedMentions: { repliedUser: false },
     presence: {
@@ -101,7 +101,7 @@ setTimeout(() => {
     client.login(process.env.DISCORD_TOKEN);
 }, 3000);
 
-Discord.Channel.prototype.getdb = async function () {
+Discord.BaseChannel.prototype.getdb = async function () {
     // console.log(client.db);
     try {
         var channelData = this.client.db.cache.channel.find(data => data.channelId == this.id);
@@ -121,7 +121,7 @@ Discord.Channel.prototype.getdb = async function () {
     return channelData;
 };
 
-Discord.Channel.prototype.setdb = async function (data) {
+Discord.BaseChannel.prototype.setdb = async function (data) {
     var channelData = await this.client.db.channel.findOne({
         channelId: this.id
     });

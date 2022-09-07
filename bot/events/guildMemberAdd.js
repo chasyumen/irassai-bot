@@ -6,7 +6,7 @@ module.exports = {
             var serverData = await member.guild.getdb();
             console.log(serverData);
             if (!serverData.memberJoinNotify) {
-                var logString = `GUILD: \`${member.guild.name} (ID:${member.guild.id})\`, MEMBER: \`${member.user.tag} (ID:${member.user.id})\`, NOTIFY: \`false\``;
+                var logString = `GUILD: \`${member.guild.name} (ID:${member.guild.id})\`, MEMBER: \`${member.user.tag} (ID:${member.user.id})\`, NOTIFY: \`DISABLED\``;
 
                 client.emit("addLogQueue", "MEMBER", "JOIN", new Date(), logString);
                 return;
@@ -23,7 +23,7 @@ module.exports = {
                 client.emit("addLogQueue", "MEMBER", "JOIN", new Date(), logString);
                 return;
             } 
-            var logString = `GUILD: \`${member.guild.name} (ID:${member.guild.id})\`, MEMBER: \`${member.user.tag} (ID:${member.user.id})\`, NOTIFY: \`true\``;
+            var logString = `GUILD: \`${member.guild.name} (ID:${member.guild.id})\`, MEMBER: \`${member.user.tag} (ID:${member.user.id})\`, NOTIFY: \`ENABLED\``;
 
             client.emit("addLogQueue", "MEMBER", "JOIN", new Date(), logString);
 

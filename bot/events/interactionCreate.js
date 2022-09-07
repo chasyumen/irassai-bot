@@ -1,3 +1,5 @@
+const { InteractionType } = require("discord.js");
+
 module.exports = {
     name: "interactionCreate",
     event: "interactionCreate",
@@ -5,7 +7,7 @@ module.exports = {
         if (!interaction.inGuild()) {
             return await interaction.reply("このBotは現在DMでのコマンドには応答できません。");
         }
-        if (interaction.isCommand()) {
+        if (interaction.type === InteractionType.ApplicationCommand) {
             if (interaction.channel.isThread()) {
                 return false;
             }
@@ -37,7 +39,7 @@ module.exports = {
             client.emit("addLogQueue", "COMMAND", "EXECUTE", new Date(), logString);
 
             if (client.commands.has(interaction.commandName)) {
-                if (client.commands.get(interaction.commandName).isServerAdminOnly && !interaction.member.permissions.has("MANAGE_GUILD")) {
+                if (client.commands.get(interaction.commandName).isServerAdminOnly && !interaction.member.permissions.has(BigInt(1 << 5))) {
                     return interaction.reply({content: "権限がありません。", ephemeral: true});
                 }
 
@@ -49,7 +51,7 @@ module.exports = {
             } else {
                 return interaction.reply("コマンドが見つかりませんでした。");
             }
-        } else {
+        } else { //interaction.type === InteractionType.MessageComponent
             var res = {
                 reply: async function (reply) {
                     if (interaction.deferred) {

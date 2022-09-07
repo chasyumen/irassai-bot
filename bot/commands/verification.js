@@ -1,4 +1,5 @@
 const Discord = require("discord.js");
+const { ButtonStyle } = Discord;
 
 module.exports = {
     name: "verification",
@@ -8,6 +9,7 @@ module.exports = {
     isGlobalAdminOnly: false,
     slashOptions: {
         options: [
+            {name: "view", description: "設定を確認します", type: 1, options: []},
             { name: "on", description: "メンバー認証を有効化します", type: 1, options: [] },
             { name: "off", description: "メンバー認証を無効化します", type: 1, options: [] },
             { name: "resend", description: "メンバー認証用のメッセージを再度送信します。", type: 1, options: [] },
@@ -17,15 +19,49 @@ module.exports = {
     },
     exec: async function (interaction, i, res) {
         await res.defer();
-        if (!interaction.guild.me.permissions.has("MANAGE_ROLES")) {
+        if (!(await interaction.guild.members.fetchMe()).permissions.has(BigInt(1 << 28))) {
             return await res.reply(`Botにロール管理権限がないため設定できませんでした。`);
         }
         var serverData = await i.guild.getdb();
-        if (interaction.options.getSubcommand() == "on") {
+        if (interaction.options.getSubcommand() == "view") {
+            var fieldArray = new Array({
+                    "name": "機能を利用する (有効/無効)",
+                    "value": serverData.verification.isEnabled ? "有効" : "無効",
+                    "inline": true
+                });
+            // if (serverData.verification.isEnabled == true) {
+                fieldArray.push({
+                    "name": "チャンネル",
+                    "value": serverData.verification.channel !== null ? 
+                    `<#${serverData.verification.channel}> \n(ID: \`${serverData.verification.channel}\`)` : 
+                    "未登録",
+                    "inline": true
+                });
+                fieldArray.push({
+                    "name": "ロール",
+                    "value": serverData.verification.role !== null ? 
+                    `<@&${serverData.verification.role}> \n(ID: \`${serverData.verification.role}\`)` : 
+                    "未登録",
+                    "inline": true
+                });
+                fieldArray.push({
+                    "name": "認証メッセージ",
+                    "value": serverData.verification.latestVerifyMessage !== null ? 
+                    `https://discord.com/channels/${interaction.guild.id}/${serverData.verification.channel}/${serverData.verification.latestVerifyMessage}` : 
+                    "未登録",
+                    "inline": true
+                });
+            // }
+            return await res.reply({embeds:[{
+                title: "メンバー認証機能設定",
+                color: config.default_color,
+                fields: fieldArray
+            }]});
+        } else if (interaction.options.getSubcommand() == "on") {
             if ((serverData).verification.channel && (serverData).verification.role) {
                 if (interaction.guild.channels.cache.has((serverData).verification.channel)) {
                     var channel = interaction.guild.channels.cache.get((serverData).verification.channel);
-                    if (!channel.permissionsFor(interaction.guild.me).has(["VIEW_CHANNEL", "SEND_MESSAGES", "EMBED_LINKS"])) {
+                    if (!channel.permissionsFor(interaction.guild.me).has([BigInt(1 << 10), BigInt(1 << 11), BigInt(1 << 14)])) {
                         return await res.reply(`このBotに指定されたチャンネルを見る権限、メッセージを送る権限、埋め込みリンクを送信する権限のいずれかまたはすべてが付与されていないため有効化できません。`);
                     }
                 } else {
@@ -71,7 +107,7 @@ module.exports = {
         } else if (interaction.options.getSubcommand() == "set_channel") {
             var ch = interaction.options.getChannel("channel");
             if (ch.type == "GUILD_TEXT") {
-                if (!ch.permissionsFor(interaction.guild.me).has(["VIEW_CHANNEL", "SEND_MESSAGES", "EMBED_LINKS"])) {
+                if (!ch.permissionsFor(interaction.guild.me).has([BigInt(1 << 10), BigInt(1 << 11), BigInt(1 << 14)])) {
                     return await res.reply(`このBotには指定されたチャンネルを見る権限、メッセージを送る権限、埋め込みリンクの権限のいずれかまたはすべてがありません。`);
                 }
                 if (serverData.verification.latestVerifyMessage && interaction.guild.channels.cache.has(serverData["verification"]["channel"])) {
@@ -95,7 +131,7 @@ module.exports = {
             }
         } else if (interaction.options.getSubcommand() == "set_role") {
             var role = interaction.options.getRole("role");
-            var highestRole = interaction.guild.me.roles.highest;
+            var highestRole = (await interaction.guild.members.fetchMe()).roles.highest;
             if (role.managed) {
                 return await res.reply(`このロールは外部サービスに管理されている(個別のBot専用のロールなど)ため付与できません。`);
             }
@@ -131,8 +167,8 @@ module.exports = {
 }
 
 function generateMessageForVerification() {
-    var Button = new Discord.MessageActionRow().addComponents(
-        new Discord.MessageButton().setCustomId('verifyMember').setLabel('認証').setStyle('PRIMARY')
+    var Button = new Discord.ActionRowBuilder().addComponents(
+        new Discord.ButtonBuilder().setCustomId('verifyMember').setLabel('認証').setStyle(ButtonStyle.Primary)
     );
     return {
         embeds: [{
