@@ -1,4 +1,5 @@
 const Discord = require("discord.js");
+const { ButtonStyle } = Discord;
 
 module.exports = {
     name: "verification",
@@ -131,8 +132,8 @@ module.exports = {
 }
 
 function generateMessageForVerification() {
-    var Button = new Discord.MessageActionRow().addComponents(
-        new Discord.MessageButton().setCustomId('verifyMember').setLabel('認証').setStyle('PRIMARY')
+    var Button = new Discord.ActionRowBuilder().addComponents(
+        new Discord.ButtonBuilder().setCustomId('verifyMember').setLabel('認証').setStyle(ButtonStyle.Primary)
     );
     return {
         embeds: [{

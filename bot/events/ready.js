@@ -55,7 +55,7 @@ module.exports = {
             } else {
                 number++;
             }
-            client.user.setPresence({
+            client.user.presence.set({
                 activities: [presences[number]],
                 status: "online"
             });

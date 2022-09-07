@@ -1,3 +1,5 @@
+const { InteractionType } = require("discord.js");
+
 module.exports = {
     name: "interactionCreate",
     event: "interactionCreate",
@@ -5,7 +7,7 @@ module.exports = {
         if (!interaction.inGuild()) {
             return await interaction.reply("このBotは現在DMでのコマンドには応答できません。");
         }
-        if (interaction.isCommand()) {
+        if (interaction.type === InteractionType.ApplicationCommand) {
             if (interaction.channel.isThread()) {
                 return false;
             }
@@ -49,7 +51,7 @@ module.exports = {
             } else {
                 return interaction.reply("コマンドが見つかりませんでした。");
             }
-        } else {
+        } else { //interaction.type === InteractionType.MessageComponent
             var res = {
                 reply: async function (reply) {
                     if (interaction.deferred) {
