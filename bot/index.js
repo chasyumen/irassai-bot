@@ -28,7 +28,7 @@ const client = (global.client = new Client({
         GatewayIntentBits.DirectMessages,
         GatewayIntentBits.DirectMessageReactions,
         // GatewayIntentBits.DirectMessageTyping,
-        GatewayIntentBits.MessageContent,
+        // GatewayIntentBits.MessageContent,
     ],
     allowedMentions: { repliedUser: false },
     presence: {
