@@ -4,7 +4,7 @@ module.exports = {
     exec: async function (member) {
         if (member.guild.available) {
             var serverData = await member.guild.getdb();
-            console.log(serverData);
+            // console.log(serverData);
             if (!serverData.memberJoinNotify) {
                 var logString = `GUILD: \`${member.guild.name} (ID:${member.guild.id})\`, MEMBER: \`${member.user.tag} (ID:${member.user.id})\`, NOTIFY: \`DISABLED\``;
 
@@ -16,7 +16,7 @@ module.exports = {
             } else {
                 var channel = member.guild.systemChannel ?? null;
             }
-            console.log(channel);
+            // console.log(channel);
             if (!channel) {
                 var logString = `GUILD: \`${member.guild.name} (ID:${member.guild.id})\`, MEMBER: \`${member.user.tag} (ID:${member.user.id})\`, NOTIFY: \`CHANNEL_NOT_FOUND\``;
 
