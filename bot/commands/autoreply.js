@@ -12,6 +12,7 @@ module.exports = {
     },
     exec: async function (interaction, i, res) {
         await res.defer();
+        return await res.reply("この機能は現在使用できません。");
         if (interaction.options.getSubcommand() == "on") {
             await i.channel.setdb({autoReply: true});
             return await res.reply("自動返信を有効にしました！");
