@@ -16,28 +16,29 @@ module.exports = {
             } else {
                 var channel = member.guild.systemChannel ?? null;
             }
+            var userDisplayname = client.functions.get("usernameFormat").run(member.user.username, member.user.discriminator)
             // console.log(channel);
             if (!channel) {
-                var logString = `GUILD: \`${member.guild.name} (ID:${member.guild.id})\`, MEMBER: \`${member.user.tag} (ID:${member.user.id})\`, NOTIFY: \`CHANNEL_NOT_FOUND\``;
+                var logString = `GUILD: \`${member.guild.name} (ID:${member.guild.id})\`, MEMBER: \`${userDisplayname} (ID:${member.user.id})\`, NOTIFY: \`CHANNEL_NOT_FOUND\``;
 
                 client.emit("addLogQueue", "MEMBER", "JOIN", new Date(), logString);
                 return;
             } 
-            var logString = `GUILD: \`${member.guild.name} (ID:${member.guild.id})\`, MEMBER: \`${member.user.tag} (ID:${member.user.id})\`, NOTIFY: \`ENABLED\``;
+            var logString = `GUILD: \`${member.guild.name} (ID:${member.guild.id})\`, MEMBER: \`${userDisplayname} (ID:${member.user.id})\`, NOTIFY: \`ENABLED\``;
 
             client.emit("addLogQueue", "MEMBER", "JOIN", new Date(), logString);
 
             if (serverData.memberJoinNotifyType == "embed") {
                 return await channel.send({embeds: [{
-                    title: `${member.user.tag}さん!! いらっさい!!`,
+                    title: `${userDisplayname}さん!! いらっさい!!`,
                     color: config.colors.default_color,
-                    description: `${member.user.tag}さんが${member.guild.name}に参加しました！`,
+                    description: `${userDisplayname}さんが${member.guild.name}に参加しました！`,
                     thumbnail: {
                         url: member.user.avatarURL({dynamic: true})
                     }
                 }]});
             } else {
-                return await channel.send(`${member.user.tag}さん!! いらっさい!!`);
+                return await channel.send(`${userDisplayname}さん!! いらっさい!!`);
             }
         }
     }

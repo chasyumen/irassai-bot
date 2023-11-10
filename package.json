@@ -1,6 +1,6 @@
 {
   "name": "irassai-bot",
-  "version": "2.4.3",
+  "version": "2.4.3-rev2",
   "description": "新・いらっさいbot",
   "main": "index.js",
   "scripts": {
